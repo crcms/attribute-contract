@@ -55,6 +55,12 @@ abstract class AbstractAttributeContract
     public static function __callStatic($name, $arguments)
     {
         $static = new static;
+
+        $cover = ['getStaticTransform'=>'getTransform','getStaticAttributes'=>'getAttributes'];
+        if (isset($cover[$name])) {
+            return call_user_func_array([$static,$cover[$name]],$arguments);
+        }
+
         if (method_exists($name,$static)) {
             return call_user_func_array([$static,$name],$arguments);
         }
