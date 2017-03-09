@@ -61,6 +61,7 @@ abstract class AbstractAttributeContract
             return call_user_func_array([$static,$cover[$name]],$arguments);
         }
 
+        $name = $name.'Static';
         if (method_exists($static,$name)) {
             return call_user_func_array([$static,$name],$arguments);
         }
