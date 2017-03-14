@@ -56,13 +56,13 @@ abstract class AbstractAttributeContract
     {
         $static = new static;
 
-        //内置转换
+        //鍐呯疆杞崲
         $cover = ['getStaticTransform'=>'getTransform','getStaticAttributes'=>'getAttributes'];
         if (isset($cover[$name])) {
             return call_user_func_array([$static,$cover[$name]],$arguments);
         }
 
-        //static调用
+        //static璋冪敤
         $suffix = substr($name,-6);
         $name = substr($name,0,-6);
         if (strtolower($suffix) === 'static' && method_exists($static,$name)) {
