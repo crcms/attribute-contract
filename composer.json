@@ -1,24 +1,28 @@
 {
-    "name": "crcms/attribute-contract",
-    "description": "crcms attribute-contract",
-	"keywords": ["crcms", "attribute-contract","laravel","php"],
-	"homepage": "https://github.com/crcms/attribute-contract",
-    "license": "MIT",
-	"authors": [
-        {
-            "name": "simon",
-            "email": "28737164@qq.com",
-			"homepage": "http://crcms.cn"
-        }
-    ],
-    "require": {
-        "php":">=7.0"
-    },
-	"autoload": {
-        "files": [
-        ],
-        "psr-4": {
-          "CrCms\\AttributeContract\\": "src/"
-        }
+  "name": "crcms/attribute-contract",
+  "description": "crcms attribute-contract",
+  "keywords": [
+    "attribute-contract",
+    "crcms"
+  ],
+  "homepage": "https://github.com/crcms/attribute-contract",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "crcms",
+      "email": "crcms@crcms.cn",
+      "homepage": "http://crcms.cn"
     }
+  ],
+  "require": {
+    "php": ">=7.0",
+    "illuminate/support": "^5.4"
+  },
+  "autoload": {
+    "files": [
+    ],
+    "psr-4": {
+      "CrCms\\AttributeContract\\": "src/"
+    }
+  }
 }

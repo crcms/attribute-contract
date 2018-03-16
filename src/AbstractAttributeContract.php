@@ -1,7 +1,9 @@
 <?php
+
 namespace CrCms\AttributeContract;
 
 use CrCms\AttributeContract\Exceptions\NotFoundException;
+use Illuminate\Support\Arr;
 
 /**
  * Interface AttributeContract
@@ -9,65 +11,75 @@ use CrCms\AttributeContract\Exceptions\NotFoundException;
 abstract class AbstractAttributeContract
 {
     /**
-     * @var bool
+     * @var array
      */
-    protected $openException = false;
+    protected $attributes = [];
 
+    /**
+     * @var static
+     */
+    protected static $instance;
+
+    /**
+     * AbstractAttributeContract constructor.
+     */
+    protected function __construct()
+    {
+        $this->attributes = $this->attributes();
+    }
 
     /**
      * @return array
      */
-    abstract public function getAttributes() : array ;
-
+    abstract protected function attributes(): array;
 
     /**
-     * @param bool $status
-     * @return AbstractAttributeContract
+     * @return array
      */
-    public function setOpenException(bool $status) : AbstractAttributeContract
+    public static function getAttributes(): array
     {
-        $this->openException = $status;
-        return $this;
+        return static::instance()->attributes;
     }
 
-
     /**
-     * @param $key
-     * @return string
-     * @throws NotFoundException
-     */
-    public function getTransform($key): string
-    {
-        if (!isset($this->getAttributes()[$key]) && $this->openException)
-        {
-            throw new NotFoundException('No conversion value was found');
-        }
-
-        return $this->getAttributes()[$key] ?? '';
-    }
-
-
-    /**
-     * @param $name
-     * @param $arguments
+     * @param string $key
+     * @param null $default
      * @return mixed
      */
-    public static function __callStatic($name, $arguments)
+    public static function getTransform(string $key, $default = null)
     {
-        $static = new static;
-
-        //内置转换
-        $cover = ['getStaticTransform'=>'getTransform','getStaticAttributes'=>'getAttributes'];
-        if (isset($cover[$name])) {
-            return call_user_func_array([$static,$cover[$name]],$arguments);
-        }
-
-        //static调用
-        $suffix = substr($name,-6);
-        $name = substr($name,0,-6);
-        if (strtolower($suffix) === 'static' && method_exists($static,$name)) {
-            return call_user_func_array([$static,$name],$arguments);
-        }
+        return Arr::get(static::getAttributes(), $key, $default);
     }
 
+    /**
+     * @param string $key
+     * @param null $default
+     * @return mixed
+     */
+    public static function getStaticTransform(string $key, $default = null)
+    {
+        return static::getTransform($key, $default);
+    }
+
+    /**
+     * @return array
+     */
+    public static function getStaticAttributes(): array
+    {
+        return static::getAttributes();
+    }
+
+    /**
+     * @return AbstractAttributeContract
+     */
+    protected static function instance(): self
+    {
+        if (static::$instance instanceof static) {
+            return static::$instance;
+        }
+
+        static::$instance = new static;
+
+        return static::$instance;
+    }
 }
