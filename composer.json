@@ -3,6 +3,8 @@
   "description": "crcms attribute-contract",
   "keywords": [
     "attribute-contract",
+    "contract",
+    "attribute",
     "crcms"
   ],
   "homepage": "https://github.com/crcms/attribute-contract",
@@ -23,6 +25,20 @@
     ],
     "psr-4": {
       "CrCms\\AttributeContract\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "CrCms\\AttributeContract\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "CrCms\\AttributeContract\\AttributeContractServiceProvider"
+      ],
+      "aliases": {
+      }
     }
   }
 }

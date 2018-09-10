@@ -39,9 +39,9 @@ class ConnectionManager
     /**
      * @param null|string $driver
      */
-    public function makeConnection(?string $driver = null)
+    public function makeConnection(string $driver)
     {
-        return $this->factory::factory($this->configure($driver));
+        return $this->factory->factory($driver, $this->configure($driver));
     }
 
     /**
@@ -50,6 +50,9 @@ class ConnectionManager
      */
     public function connection(?string $driver = null)
     {
+        $driver = $this->defaultDriver($driver);
+        dd($driver);
+
         if (!isset($this->connections[$driver])) {
             $this->connections[$driver] = $this->makeConnection($driver);
         }
@@ -61,13 +64,18 @@ class ConnectionManager
      * @param null|string $driver
      * @return mixed
      */
-    protected function configure(?string $driver = null)
+    protected function configure(string $driver)
     {
-        if (!$driver) {
-            $driver = $this->app->make('config')->get('attribute.default');
-        }
 
         return $this->app->make('config')->get("attribute.connections.{$driver}");
+    }
+
+    protected function defaultDriver(?string $driver = null): string
+    {
+        if (is_null($driver)) {
+            $driver = $this->app->make('config')->get('attribute.default');
+        }
+        return $driver;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace CrCms\AttributeContract\Commands;
 
 use Illuminate\Console\Command;
+use Illuminate\Support\Str;
 
 /**
  * Class AttributeCommand
@@ -10,24 +11,14 @@ use Illuminate\Console\Command;
  */
 class AttributeCommand extends Command
 {
-    protected $name = 'make:attribute {action}';
+    protected $signature = 'make:attribute {action : list create update delete}';
 
 
     public function handle()
     {
-        $name = $this->ask('Please Input constant name');
+        $action = $this->argument('action');
 
-        $value = $this->ask('Please Input constant value');
-
-        $appAsk = $this->confirm('Is it set to APP private attribute?');//$this->ask('Is confirm private app?',['Yes','No']);
-        $app = $appAsk === 'Yes' ? config('attribute.app') : null;
-        if (empty($app)) {
-            $this->error("Please configure the constant application");
-            exit();
-        }
-
-        if ($this->confirm('Are you sure you want to add this constant?')) {
-
-        }
+        $class = 'CrCms\AttributeContract\Services\Command\\'.Str::ucfirst($action).'Command';
+        (new $class(app(),$this))->handle();
     }
 }

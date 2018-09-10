@@ -2,6 +2,7 @@
 
 namespace CrCms\AttributeContract;
 
+use CrCms\AttributeContract\Commands\AttributeCommand;
 use CrCms\AttributeContract\Commands\CreateCommand;
 use Illuminate\Support\ServiceProvider;
 
@@ -11,7 +12,7 @@ use Illuminate\Support\ServiceProvider;
  */
 class AttributeContractServiceProvider extends ServiceProvider
 {
-    protected $defer = true;
+    protected $defer = false;
 
     /**
      * @var string
@@ -36,7 +37,7 @@ class AttributeContractServiceProvider extends ServiceProvider
     public function register(): void
     {
         //merge config
-        $configFile = $this->packagePath . "config/{$this->namespaceName}.php";
+        $configFile = $this->packagePath . "config/config.php";
         $this->mergeConfigFrom($configFile, $this->namespaceName);
 
         $this->registerAlias();
@@ -77,6 +78,6 @@ class AttributeContractServiceProvider extends ServiceProvider
     {
         $this->app->alias(ConnectionManager::class, 'attribute.manager');
         $this->app->alias(ConnectionFactory::class, 'attribute.factory');
-        $this->app->alias(CreateCommand::class, 'attribute.make');
+        $this->app->alias(AttributeCommand::class, 'attribute.make');
     }
 }
