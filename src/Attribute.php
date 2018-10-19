@@ -20,7 +20,7 @@ class Attribute
     /**
      * @return array
      */
-    public static function getAttribute($model, string $key)
+    public static function get($model, string $key)
     {
         if ($model instanceof Model) {
             $table = $model->getTable();
