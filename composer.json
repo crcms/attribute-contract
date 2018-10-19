@@ -17,8 +17,9 @@
     }
   ],
   "require": {
-    "php": ">=7.0",
-    "illuminate/support": "^5.5"
+    "php": ">=7.1",
+    "illuminate/support": "^5.5",
+    "crcms/data-center": "dev-master"
   },
   "autoload": {
     "files": [

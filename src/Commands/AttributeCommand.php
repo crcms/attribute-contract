@@ -2,6 +2,7 @@
 
 namespace CrCms\AttributeContract\Commands;
 
+use CrCms\DataCenter\Commands\DataCenterCommand;
 use Illuminate\Console\Command;
 use Illuminate\Support\Str;
 
@@ -9,16 +10,36 @@ use Illuminate\Support\Str;
  * Class AttributeCommand
  * @package CrCms\AttributeContract\Commands
  */
-class AttributeCommand extends Command
+class AttributeCommand extends DataCenterCommand
 {
-    protected $signature = 'make:attribute {action : list create update delete}';
+    /**
+     * @var string
+     */
+    protected $signature = 'make:attribute {action : Method of execution. Supports the all get put flush delete method} {table : Table name or Model name}';
 
+    /**
+     * @var string
+     */
+    protected $description = 'Set data table properties';
 
-    public function handle()
+    /**
+     * @return string
+     */
+    protected function key(): string
     {
-        $action = $this->argument('action');
+        $table = $this->argument('table');
+        if (class_exists($table)) {
+            $table = (new $table)->getTable();
+        }
 
-        $class = 'CrCms\AttributeContract\Services\Command\\'.Str::ucfirst($action).'Command';
-        (new $class(app(),$this))->handle();
+        return $table . '_' . parent::getKey();
+    }
+
+    /**
+     * @return string
+     */
+    protected function connection(): string
+    {
+        return config('attribute.connection');
     }
 }
