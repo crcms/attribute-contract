@@ -28,7 +28,7 @@ class AttributeContractServiceProvider extends ServiceProvider
     protected $packagePath = __DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR;
 
     /**
-     * @return void
+     *
      */
     public function boot(): void
     {
@@ -45,5 +45,14 @@ class AttributeContractServiceProvider extends ServiceProvider
         //merge config
         $configFile = $this->packagePath . "config/config.php";
         $this->mergeConfigFrom($configFile, $this->namespaceName);
+
+        $this->registerCommands();
+    }
+
+    protected function registerCommands()
+    {
+        $this->commands([
+            AttributeCommand::class,
+        ]);
     }
 }

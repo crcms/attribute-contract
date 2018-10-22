@@ -32,7 +32,7 @@ class AttributeCommand extends DataCenterCommand
             $table = (new $table)->getTable();
         }
 
-        return $table . '_' . parent::getKey();
+        return $table . '_' . parent::key();
     }
 
     /**

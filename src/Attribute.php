@@ -44,9 +44,9 @@ class Attribute
      * @param $value
      * @return bool
      */
-    public static function equal(string $key, $value): bool
+    public static function equal($model, string $key, $value): bool
     {
-        return static::attribute($key) === $value;
+        return static::get($model, $key) === $value;
     }
 
     /**
